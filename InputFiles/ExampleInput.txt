@@ -1,0 +1,30 @@
+Talk
+
+[Character Coda][Time 4][Audio file.wav]
+	Wait
+
+[Character Opus]
+	This has no button audio, which should be fine.
+    Hit the interact button to continue the dialogue.
+
+[Character Clef][Choice][Audio file2.wav]
+	Here's a dialogue choice
+	[first choice][DialogueChoice1]
+	[another choice][DialogueChoice2]
+	[a third choice][DialogueChoice3]
+
+[FireEvent Spoke]
+
+[SetFlag AcceptedMission True]
+
+[HasItem TuningFork]
+	[True DialogueHasTuningFork]
+	[False DialogueMissingTuningFork]
+
+[ItemEquipped TuningFork]
+	[True DialogueHasTuningFork]
+	[False DialogueMissingTuningFork]
+
+[FlagCheck TestFlag]
+	[True TestFlagTrue]
+	[False TestFlagFalse]
