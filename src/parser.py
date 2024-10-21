@@ -201,6 +201,8 @@ def write_dialogue_frame(lines, current_line, output_file, indent):
 
     # write audio file
     if "Audio" in props.keys():
+        assert props["Audio"] in audio_file_names, f"{props["Audio"]} on line {current_line} is not in the list of audio files"
+
         output_file.write(",\n")
         write_with_tabs(output_file, indent, [
             f"\"{props["Audio"]}\"\n"
@@ -277,7 +279,7 @@ def write_dialogue_fire_event(lines, current_line, output_file, indent):
 
     props = get_properties(lines, current_line, ["FireEvent"])
     event = props["FireEvent"]
-    assert event in event_names, f"{event} is not in the list of dialogue events on line {current_line}"
+    assert event in event_names, f"{event} on line {current_line} is not in the list of dialogue events"
 
     write_with_tabs(output_file, indent + 1, [
         "\"" + event + "\"\n"
@@ -322,7 +324,9 @@ def write_dialogue_has_item(lines, current_line, output_file, indent):
         "new HasItem(\n"
     ])
 
-    (current_line, indent) = write_true_false_path(lines, current_line, output_file, indent+1, "HasItem")
+    (current_line, indent) = write_true_false_path(
+        lines, current_line, output_file, indent+1, "HasItem", item_ids, "item ids"
+    )
 
     indent -= 1
     write_with_tabs(output_file, indent, [
@@ -338,7 +342,9 @@ def write_dialogue_item_equipped(lines, current_line, output_file, indent):
         "new ItemEquipped(\n"
     ])
 
-    (current_line, indent) = write_true_false_path(lines, current_line, output_file, indent+1, "ItemEquipped")
+    (current_line, indent) = write_true_false_path(
+        lines, current_line, output_file, indent+1, "ItemEquipped", item_ids, "item ids"
+    )
 
     indent -= 1
     write_with_tabs(output_file, indent, [
@@ -354,7 +360,9 @@ def write_dialogue_flag_check(lines, current_line, output_file, indent):
         "new FlagCheck(\n"
     ])
 
-    (current_line, indent) = write_true_false_path(lines, current_line, output_file, indent+1, "FlagCheck")
+    (current_line, indent) = write_true_false_path(
+        lines, current_line, output_file, indent+1, "FlagCheck", flags, "flags"
+    )
     indent -= 1
 
     write_with_tabs(output_file, indent, [
@@ -365,12 +373,15 @@ def write_dialogue_flag_check(lines, current_line, output_file, indent):
 
     return current_line, indent
 
-def write_true_false_path(lines, current_line, output_file, indent, property_name):
+def write_true_false_path(lines, current_line, output_file, indent, property_name, list_to_check, list_name):
     # write value of property
     props = get_properties(lines, current_line, [property_name])
     write_with_tabs(output_file, indent, [
         "\"" + props[property_name] + "\",\n"
     ])
+
+    thing = props[property_name]
+    assert thing in list_to_check, f"{thing} on line {current_line} is not in the list of {list_name}"
 
     # True
     current_line = next_non_empty_line(lines, current_line+1)
