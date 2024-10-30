@@ -122,8 +122,6 @@ def write_dialogue_node(lines, current_line, output_file, indent):
 
     func = None
 
-    print(sanitize_line(line))
-
     if (is_frame_start(line)):
         func = write_dialogue_frame
     elif (is_fire_event(line)):
