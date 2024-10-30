@@ -80,6 +80,8 @@ def main():
     indent -= 1
     output_file.write("}\n")
 
+    print("\nDialogue class written to OutputFiles\\" + args.file + ".cs!")
+
 def write_with_tabs(output_file, tab_count, lines):
     tabbed = []
     for l in lines:
